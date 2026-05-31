@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="WindowTitle" xml:space="preserve">
+    <value>ExifCleaner // Minimalist Metadata Tool</value>
+  </data>
+  <data name="StatusReady" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="HubSubtitle" xml:space="preserve">
+    <value>Select tool operation mode</value>
+  </data>
+  <data name="HubBtnSingle" xml:space="preserve">
+    <value>View and edit single image</value>
+  </data>
+  <data name="HubBtnBatch" xml:space="preserve">
+    <value>Batch folder cleaning</value>
+  </data>
+  <data name="BtnBack" xml:space="preserve">
+    <value>← Back to menu</value>
+  </data>
+  <data name="BtnOpenImage" xml:space="preserve">
+    <value>Open Image</value>
+  </data>
+  <data name="ChkNoiseSingle" xml:space="preserve">
+    <value>Add random noise on save</value>
+  </data>
+  <data name="BtnCleanSave" xml:space="preserve">
+    <value>Save cleaned copy</value>
+  </data>
+  <data name="MetadataHeader" xml:space="preserve">
+    <value>File Metadata (Double-click to edit values)</value>
+  </data>
+  <data name="ColHeaderKey" xml:space="preserve">
+    <value>Metadata Key</value>
+  </data>
+  <data name="ColHeaderValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="BatchTitle" xml:space="preserve">
+    <value>Batch Metadata Removal</value>
+  </data>
+  <data name="BatchLblSource" xml:space="preserve">
+    <value>Source folder with images:</value>
+  </data>
+  <data name="BtnBrowse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="BatchLblTarget" xml:space="preserve">
+    <value>Target folder for cleaned images:</value>
+  </data>
+  <data name="ChkDefaultTarget" xml:space="preserve">
+    <value>Use default /clean subfolder in source</value>
+  </data>
+  <data name="BatchLblNaming" xml:space="preserve">
+    <value>Resulting files naming convention:</value>
+  </data>
+  <data name="CmbNamingKeep" xml:space="preserve">
+    <value>Keep original name</value>
+  </data>
+  <data name="CmbNamingSuffix" xml:space="preserve">
+    <value>Add Suffix (after name)</value>
+  </data>
+  <data name="CmbNamingPrefix" xml:space="preserve">
+    <value>Add Prefix (before name)</value>
+  </data>
+  <data name="BatchLblOther" xml:space="preserve">
+    <value>Other settings:</value>
+  </data>
+  <data name="ChkBatchNoise" xml:space="preserve">
+    <value>Add random noise to all images (pixel anonymization)</value>
+  </data>
+  <data name="BtnStartBatch" xml:space="preserve">
+    <value>Start Batch Cleaning</value>
+  </data>
+  <data name="StatusProcessing" xml:space="preserve">
+    <value>Processing files...</value>
+  </data>
+</root>

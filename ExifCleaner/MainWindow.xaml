@@ -4,50 +4,185 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExifCleaner"
+        xmlns:p="clr-namespace:ExifCleaner.Properties"
         mc:Ignorable="d"
-        Title="ExifCleaner" Height="450" Width="800">
+        Title="{x:Static p:Resources.WindowTitle}" Height="600" Width="950"
+        Background="#121212" Foreground="#E0E0E0">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2A2A2A"/>
+                    <Setter Property="BorderBrush" Value="#555555"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#333333"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#333333"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#CCCCCC"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
 
     <DockPanel>
-        <!-- Horní toolbar -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="#EEE" >
-            <Button Name="BtnOpen" Content="Otevřít obrázek" Margin="5,0"/>
-            <Button Name="BtnClean" Content="Odstranit metadata" Margin="5,0"/>
-            <CheckBox Name="ChkNoise" Content="Přidat náhodný šum (anonymizace)" VerticalAlignment="Center" Margin="15,0"/>
-        </StackPanel>
-
-        <!-- Spodní status bar -->
-        <StatusBar DockPanel.Dock="Bottom">
-            <TextBlock Name="StatusText" Text="Připraven" />
+        <StatusBar DockPanel.Dock="Bottom" Background="#1A1A1A" BorderBrush="#252525" BorderThickness="0,1,0,0">
+            <TextBlock Name="StatusText" Text="{x:Static p:Resources.StatusReady}" Foreground="#888888" Margin="5,2"/>
         </StatusBar>
 
-        <!-- Hlavní obsah: levý náhled + pravý seznam -->
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
+            <Grid Name="GridHub" Visibility="Visible">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+                    <TextBlock Text="ExifCleaner" FontSize="32" FontWeight="Light" HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="#FFFFFF"/>
+                    <TextBlock Text="{x:Static p:Resources.HubSubtitle}" FontSize="12" HorizontalAlignment="Center" Margin="0,0,0,40" Foreground="#666666"/>
 
-            <!-- Náhled obrázku -->
-            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <Image Name="ImagePreview" Stretch="Uniform"/>
-            </Border>
+                    <Button Name="BtnModeSingle" Content="{x:Static p:Resources.HubBtnSingle}" Margin="0,5" Padding="20,15" Click="BtnModeSingle_Click"/>
+                    <Button Name="BtnModeBatch" Content="{x:Static p:Resources.HubBtnBatch}" Margin="0,5" Padding="20,15" Click="BtnModeBatch_Click"/>
+                </StackPanel>
+            </Grid>
 
-            <!-- Metadata -->
-            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <ScrollViewer>
-                    <StackPanel>
-                        <TextBlock Text="Metadata" FontWeight="Bold" Margin="5"/>
-                        <ListView Name="MetadataList" Margin="5">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Klíč" DisplayMemberBinding="{Binding Key}" Width="150"/>
-                                    <GridViewColumn Header="Hodnota" DisplayMemberBinding="{Binding Value}" Width="250"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
+            <Grid Name="GridSingle" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#1A1A1A" Padding="10" BorderBrush="#252525" BorderThickness="0,0,0,1">
+                    <DockPanel>
+                        <Button Name="BtnSingleBack" Content="{x:Static p:Resources.BtnBack}" Click="BtnBack_Click" DockPanel.Dock="Left"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Name="BtnOpen" Content="{x:Static p:Resources.BtnOpenImage}" Margin="5,0"/>
+                            <CheckBox Name="ChkSingleNoise" Content="{x:Static p:Resources.ChkNoiseSingle}" Margin="15,0,5,0"/>
+                            <Button Name="BtnClean" Content="{x:Static p:Resources.BtnCleanSave}" Margin="5,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Grid Grid.Row="1" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderBrush="#2D2D2D" BorderThickness="1" Background="#151515" Margin="5">
+                        <Image Name="ImagePreview" Stretch="Uniform"/>
+                    </Border>
+
+                    <Border Grid.Column="1" BorderBrush="#2D2D2D" BorderThickness="1" Background="#1E1E1E" Margin="5">
+                        <DockPanel>
+                            <TextBlock Text="{x:Static p:Resources.MetadataHeader}" DockPanel.Dock="Top" FontWeight="SemiBold" Margin="10" Foreground="#AAAAAA"/>
+                            <DataGrid Name="MetadataGrid" AutoGenerateColumns="False" Background="Transparent" 
+                                      RowBackground="#1E1E1E" AlternatingRowBackground="#252525" 
+                                      Foreground="#E0E0E0" BorderThickness="0" GridLinesVisibility="Horizontal"
+                                      HorizontalGridLinesBrush="#333333" HeadersVisibility="Column" CanUserAddRows="False">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="Background" Value="#2A2A2A"/>
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                        <Setter Property="Padding" Value="8,5"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{x:Static p:Resources.ColHeaderKey}" Binding="{Binding Key}" Width="180" IsReadOnly="True" />
+                                    <DataGridTextColumn Header="{x:Static p:Resources.ColHeaderValue}" Binding="{Binding Value}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Grid Name="GridBatch" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#1A1A1A" Padding="10" BorderBrush="#252525" BorderThickness="0,0,0,1">
+                    <Button Name="BtnBatchBack" Content="{x:Static p:Resources.BtnBack}" Click="BtnBack_Click" HorizontalAlignment="Left"/>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel MaxWidth="700" HorizontalAlignment="Left" Margin="30">
+                        <TextBlock Text="{x:Static p:Resources.BatchTitle}" FontSize="20" FontWeight="Light" Margin="0,0,0,20" Foreground="#FFFFFF"/>
+
+                        <TextBlock Text="{x:Static p:Resources.BatchLblSource}" Margin="0,10,0,5" Foreground="#888888"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="TxtSourceFolder" Grid.Column="0" IsReadOnly="True" Height="32"/>
+                            <Button Name="BtnSelectSource" Grid.Column="1" Content="{x:Static p:Resources.BtnBrowse}" Margin="5,0,0,0" Click="BtnSelectSource_Click"/>
+                        </Grid>
+
+                        <TextBlock Text="{x:Static p:Resources.BatchLblTarget}" Margin="0,15,0,5" Foreground="#888888"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="TxtTargetFolder" Grid.Column="0" Height="32"/>
+                            <Button Name="BtnSelectTarget" Grid.Column="1" Content="{x:Static p:Resources.BtnBrowse}" Margin="5,0,0,0" Click="BtnSelectTarget_Click"/>
+                        </Grid>
+                        <CheckBox Name="ChkDefaultTarget" Content="{x:Static p:Resources.ChkDefaultTarget}" IsChecked="True" Margin="0,8,0,0" Checked="ChkDefaultTarget_Changed" Unchecked="ChkDefaultTarget_Changed"/>
+
+                        <TextBlock Text="{x:Static p:Resources.BatchLblNaming}" Margin="0,20,0,5" Foreground="#888888"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Name="CmbNamingMode" Width="200" SelectedIndex="0" SelectionChanged="CmbNamingMode_SelectionChanged">
+                                <ComboBoxItem Content="{x:Static p:Resources.CmbNamingKeep}"/>
+                                <ComboBoxItem Content="{x:Static p:Resources.CmbNamingSuffix}"/>
+                                <ComboBoxItem Content="{x:Static p:Resources.CmbNamingPrefix}"/>
+                            </ComboBox>
+                            <TextBox Name="TxtNamingAffix" Width="150" Margin="10,0,0,0" Text="_clean" Visibility="Visible" Height="32"/>
+                        </StackPanel>
+
+                        <TextBlock Text="{x:Static p:Resources.BatchLblOther}" Margin="0,20,0,5" Foreground="#888888"/>
+                        <CheckBox Name="ChkBatchNoise" Content="{x:Static p:Resources.ChkBatchNoise}" Margin="0,5"/>
+
+                        <Border Background="#1A1A1A" Margin="0,30,0,0" Padding="20" CornerRadius="4" BorderBrush="#252525" BorderThickness="1">
+                            <StackPanel>
+                                <Button Name="BtnStartBatch" Content="{x:Static p:Resources.BtnStartBatch}" Background="#223322" Foreground="#88FF88" Padding="25,12" FontSize="14" HorizontalAlignment="Left" Click="BtnStartBatch_Click"/>
+
+                                <Grid Name="GridProgress" Margin="0,20,0,0" Visibility="Collapsed">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Name="TxtProgressStatus" Text="{x:Static p:Resources.StatusProcessing}" Margin="0,0,0,5" Foreground="#AAAAAA"/>
+                                    <ProgressBar Name="BatchProgressBar" Grid.Row="1" Height="15" Background="#121212" Foreground="#007ACC" BorderThickness="0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
-            </Border>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>
